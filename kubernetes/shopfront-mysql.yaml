@@ -5,11 +5,12 @@ metadata:
   labels:
     name: mysql-pod
     context: docker-k8s-lab
+    tier: backend
 spec:
   containers: 
     - 
       name: mysql
-      image: mhadian:mysql
+      image: mysql:5.6
       env: 
         - 
           name: "MYSQL_USER"
@@ -29,3 +30,7 @@ spec:
       volumeMounts:
         - name: mysql-persistent-storage
           mountPath: /var/lib/mysql
+volumes:
+  - name: mysql-persistent-storage
+    persistentVolumeClaim:
+      claimName: mysql-pv-claim
