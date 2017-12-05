@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mysql-pod
+  labels:
+    name: mysql-pod
+    context: docker-k8s-lab
+spec:
+  containers: 
+    - 
+      name: mysql
+      image: mhadian:mysql
+      env: 
+        - 
+          name: "MYSQL_USER"
+          value: "shopfront"
+        - 
+          name: "MYSQL_PASSWORD"
+          value: "super_secret"
+        - 
+          name: "MYSQL_DATABASE"
+          value: "shopfront"
+        - 
+          name: "MYSQL_ROOT_PASSWORD"
+          value: "please_dont_share_me"
+      ports:
+        - containerPort: 3306
+          name: mysql
+      volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
