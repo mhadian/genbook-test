@@ -1,5 +1,14 @@
+provider "kubernetes" {}
 
-
+####
+## MINIKUBE
+####
+#run minikube
+resource "null_resource" "minikube-start" {
+ provisioner "local-exec" {
+   command = "minikube start --cpus 2 --memory 4096"
+ }
+}
 
 
 ####
@@ -28,7 +37,9 @@ resource "kubernetes_pod" "mysql" {
   metadata {
     name = "mysql-pod"
   }
-
+  depends_on = [
+                "null_resource.minikube-start",
+               ]
   spec {
     container {
       image = "mysql:5.6"
@@ -68,7 +79,9 @@ resource "kubernetes_pod" "shopfront" {
       App = "shopfront"
     }
   }
-
+  depends_on = [
+                "null_resource.minikube-start",
+               ]
   spec {
       container {
         image = "mhadian/shopfront:1.0"
@@ -121,7 +134,9 @@ resource "kubernetes_pod" "product-calatalogue" {
       App = "product-calatalogue"
     }
   }
-
+  depends_on = [
+                "null_resource.minikube-start",
+               ]
   spec {
       container {
         image = "mhadian/productcatalogue:1.0"
